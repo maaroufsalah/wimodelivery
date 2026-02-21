@@ -1,0 +1,1 @@
+<?php class scan_by_delivery {} ?>

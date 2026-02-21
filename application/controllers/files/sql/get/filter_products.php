@@ -1,0 +1,1 @@
+<?php class filter_products {} ?>

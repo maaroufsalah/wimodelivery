@@ -1,0 +1,1 @@
+<?php class set_main_image {} ?>

@@ -1,0 +1,1 @@
+<?php class s_nav_left {} ?>

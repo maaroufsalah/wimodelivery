@@ -1,0 +1,1 @@
+<?php class remove_from_cart {} ?>

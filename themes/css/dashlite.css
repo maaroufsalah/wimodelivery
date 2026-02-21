@@ -1,0 +1,29 @@
+/* مثال محتمل - تأكد من المسارات */
+
+@font-face {
+  font-family: 'Nioicon';
+  src: url("../fonts/nioicon.eot");
+  src: url("../fonts/nioicon.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/nioicon.woff2") format("woff2"),
+       url("../fonts/nioicon.woff") format("woff"),
+       url("../fonts/nioicon.ttf") format("truetype"),
+       url("../fonts/nioicon.svg#Nioicon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.nioicon {
+  display: inline-block;
+  font: normal normal normal 14px/1 Nioicon;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* مثال لبعض الأيقونات */
+.nioicon-home:before { content: "\e900"; }
+.nioicon-user:before { content: "\e901"; }
+.nioicon-settings:before { content: "\e902"; }
+/* أكمل حسب باقي الأيقونات الموجودة في ملفك */
+

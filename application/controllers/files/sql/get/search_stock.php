@@ -1,0 +1,1 @@
+<?php class search_stock {} ?>

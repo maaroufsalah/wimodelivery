@@ -1,0 +1,1 @@
+<?php class add_to_package {} ?>

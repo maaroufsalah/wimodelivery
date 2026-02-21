@@ -1,0 +1,1 @@
+<?php class get_shipping_price {} ?>

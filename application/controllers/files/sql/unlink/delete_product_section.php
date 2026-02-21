@@ -1,0 +1,1 @@
+<?php class delete_product_section {} ?>

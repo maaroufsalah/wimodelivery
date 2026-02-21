@@ -1,0 +1,1 @@
+<?php class edit_state_rank {} ?>

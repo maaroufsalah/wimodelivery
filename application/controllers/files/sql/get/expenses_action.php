@@ -1,0 +1,1 @@
+<?php class expenses_action {} ?>

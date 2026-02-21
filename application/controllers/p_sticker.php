@@ -1,0 +1,1 @@
+<?php class p_sticker {} ?>

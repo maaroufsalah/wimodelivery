@@ -1,0 +1,1 @@
+<?php class print_delivery_invoice {} ?>

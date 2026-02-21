@@ -1,0 +1,42 @@
+# Dépendances Composer
+vendor/
+
+# Variables d'environnement
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Configuration sensible (credentials DB)
+application/config/config.php
+
+# Uploads utilisateurs (fichiers binaires lourds)
+uploads/
+themes/*/uploads/
+
+# Cache / temp
+*.cache
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sessions PHP
+*.sess
+
+# Fichiers de sauvegarde
+*.bak
+*.sql.gz
+
+# Clés Firebase
+fcm.json

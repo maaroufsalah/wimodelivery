@@ -1,0 +1,1 @@
+<?php class exp_log {} ?>

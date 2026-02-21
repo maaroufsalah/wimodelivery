@@ -1,0 +1,1 @@
+<?php class sticker_papper {} ?>

@@ -1,0 +1,1 @@
+<?php class new_stock_package {} ?>

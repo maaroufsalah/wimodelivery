@@ -1,0 +1,1 @@
+<?php class tarifs_update {} ?>

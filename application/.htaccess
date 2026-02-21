@@ -1,0 +1,10 @@
+RewriteEngine On
+
+
+RewriteCond %{REQUEST_URI} !^/uploads/images/*
+
+RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|\.svg|\.xlsx)$ [NC]
+
+#RewriteRule ^([^/]*)/([^/]*)$ index.php?url=$1&username=$2 [L]
+
+RewriteRule ^([^/]+)/? index.php?url=$1 [L,QSA]

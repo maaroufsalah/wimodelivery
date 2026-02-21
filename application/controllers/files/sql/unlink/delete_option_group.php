@@ -1,0 +1,1 @@
+<?php class delete_option_group {} ?>

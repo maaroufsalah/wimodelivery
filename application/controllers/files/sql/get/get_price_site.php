@@ -1,0 +1,1 @@
+<?php class get_price_site {} ?>

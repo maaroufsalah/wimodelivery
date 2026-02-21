@@ -1,0 +1,1 @@
+<?php class new_tarif_user {} ?>

@@ -1,0 +1,1 @@
+<?php class load_products {} ?>

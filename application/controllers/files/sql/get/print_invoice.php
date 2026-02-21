@@ -1,0 +1,1 @@
+<?php class print_invoice {} ?>

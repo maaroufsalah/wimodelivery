@@ -1,0 +1,1 @@
+<?php class delivery_alert {} ?>

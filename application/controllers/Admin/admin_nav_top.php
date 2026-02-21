@@ -1,0 +1,1 @@
+<?php class admin_nav_top {} ?>

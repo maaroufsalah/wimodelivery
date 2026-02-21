@@ -1,0 +1,1 @@
+<?php class r_stock {} ?>

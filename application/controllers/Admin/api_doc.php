@@ -1,0 +1,1 @@
+<?php class api_doc {} ?>

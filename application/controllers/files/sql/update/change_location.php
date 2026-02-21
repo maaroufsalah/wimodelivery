@@ -1,0 +1,1 @@
+<?php class change_location {} ?>

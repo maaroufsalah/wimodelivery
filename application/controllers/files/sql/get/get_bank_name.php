@@ -1,0 +1,1 @@
+<?php class get_bank_name {} ?>
