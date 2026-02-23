@@ -370,3 +370,39 @@ CREATE TABLE `orders` (
 ---
 
 *Rapport complet — Ne pas modifier le code avant validation de la solution proposée.*
+
+---
+
+## 7. Journal des modifications (2026-02-23)
+
+### 7.1 Rollback BIGINT → INT(11)
+
+La migration BIGINT précédente a été annulée. La colonne `or_id` et toutes les colonnes de référence ont été ramenées à leur type d'origine `INT(11)`.
+
+**Tables concernées :**
+
+| Table | Colonne | Avant | Après |
+|-------|---------|-------|-------|
+| `orders` | `or_id` | `bigint(20)` AUTO_INCREMENT | `int(11)` AUTO_INCREMENT = 2439 |
+| `order_items` | `order_id` | `bigint(20)` | `int(11)` |
+| `state_activity` | `sa_order` | `bigint(20)` | `int(11)` |
+| `activities` | `ac_order` | `bigint(20)` | `int(11)` |
+| `expedition_colis` | `colis_id` | `bigint(20)` | `int(11)` |
+
+Un colis test (`or_id = 10000000000`) créé lors des tests BIGINT a été supprimé.
+
+### 7.2 Solution API Oscario — Préfixe "WMD-"
+
+**Fichier modifié :** `application/views/default/Admin/api_list.php`, ligne 74
+
+```php
+// AVANT
+"code" => $row['or_id'],
+
+// APRÈS
+"code" => "WMD-" . $row['or_id'],
+```
+
+**Pourquoi ça suffit :** le préfixe `WMD-` différencie les codes de cette installation WimoDelivery des autres installations partageant les mêmes credentials Oscario. Les `or_id` `1`, `2`, `3`... deviennent `WMD-1`, `WMD-2`, `WMD-3`... et ne peuvent plus entrer en conflit avec une autre installation dont les IDs commenceraient aussi à 1.
+
+**État final :** `or_id` reste `INT(11)` auto-increment standard, sans aucune autre modification.

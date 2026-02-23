@@ -118,9 +118,10 @@ document.getElementById('fillTokensBtn').addEventListener('click', function() {
 });
 
 // Trigger the hidden button automatically
-let formReady = false;
+// formReady = true par défaut, Firebase/OneSignal enrichissent si disponibles
+let formReady = true;
 setInterval(() => {
-    if (!formReady && (window.firebaseplayerid || window.onesignalplayerid)) {
+    if (window.firebaseplayerid || window.onesignalplayerid) {
         $('#fillTokensBtn').trigger('click');
     }
 }, 500);

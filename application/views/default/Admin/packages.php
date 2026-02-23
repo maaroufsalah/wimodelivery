@@ -790,6 +790,27 @@ $('#print_fee_checkbox').on('change', function() {
 
 
 });
+
+// Fonction globale appelée par onsubmit des modals
+// Met à jour order_id + log console pour le form API
+function collectSelectedIds(formId) {
+    var selectedIds = $('.order-checkbox:checked').map(function() {
+        return $(this).val();
+    }).get().join(',');
+
+    $('#' + formId + ' input[name="order_id"]').val(selectedIds);
+
+    if (formId === 'api_form') {
+        var apiName = $('#' + formId + ' select[name="api_id"] option:selected').text();
+        var count = selectedIds ? selectedIds.split(',').filter(Boolean).length : 0;
+        console.log('=== API TRANSFER ===');
+        console.log('IDs sélectionnés:', selectedIds);
+        console.log('API choisie:', apiName);
+        console.log('Nombre de colis:', count);
+    }
+
+    return true; // laisse jQuery ajaxFormSubmit gérer l'AJAX
+}
 </script>
 
 <?php

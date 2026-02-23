@@ -5,6 +5,16 @@ include get_file("files/sql/get/os_settings");
 include get_file("files/sql/get/session");
 include get_file("files/sql/get/functions");
 
+// --- Log fichier ---
+$log_file = __DIR__ . '/../../../../logs/api_oscario.log';
+if (!is_dir(dirname($log_file))) {
+    mkdir(dirname($log_file), 0755, true);
+}
+function api_log($message, $log_file) {
+    $timestamp = date('Y-m-d H:i:s');
+    file_put_contents($log_file, "[$timestamp] $message\n", FILE_APPEND | LOCK_EX);
+}
+
 if (SRM("POST")) {
 
     $orderIdsRaw = $_POST['order_id'] ?? ''; 
@@ -71,7 +81,7 @@ if (SRM("POST")) {
                     $params = [
                         "tk"          => $tk,
                         "sk"          => $sk,
-                        "code"        => $row['or_id'],
+                        "code"        => "WMD-" . $row['or_id'],
                         "fullname"    => $row['or_name'],
                         "phone"       => $row['or_phone'],
                         "city"        => $row['or_city'],   // API تحتاج ID المدينة
@@ -87,6 +97,15 @@ if (SRM("POST")) {
                     // بناء الرابط (GET)
                     $url = "https://oscario.org/addcolis.php?" . http_build_query($params);
 
+                    // --- Log avant envoi ---
+                    api_log("=== ENVOI COLIS ===", $log_file);
+                    api_log("or_id: " . $row['or_id'], $log_file);
+                    api_log("code envoyé: WMD-" . $row['or_id'], $log_file);
+                    api_log("destinataire: " . $row['or_name'] . " - " . $row['or_phone'], $log_file);
+                    api_log("ville: " . $row['or_city'], $log_file);
+                    api_log("prix: " . $row['or_total'], $log_file);
+                    api_log("URL complète: " . $url, $log_file);
+
                     // تنفيذ الطلب عبر cURL (GET)
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
@@ -96,16 +115,22 @@ if (SRM("POST")) {
                     $apiResponse = curl_exec($ch);
 
                     if (curl_errno($ch)) {
+                        $curlError = curl_error($ch);
+                        api_log("ERREUR cURL: " . $curlError, $log_file);
+                        api_log("=== FIN ENVOI ===\n", $log_file);
                         $responses[] = [
                             "order_id" => $row['or_id'],
-                            "error"    => curl_error($ch)
+                            "error"    => $curlError
                         ];
                     } else {
                         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                        api_log("HTTP code: " . $httpCode, $log_file);
+                        api_log("Réponse Oscario: " . $apiResponse, $log_file);
+                        api_log("=== FIN ENVOI ===\n", $log_file);
                         $responses[] = [
                             "order_id"  => $row['or_id'],
                             "http_code" => $httpCode,
-                            "sent_data" => $params,   // 🔍 مفيد للاختبار
+                            "sent_data" => $params,
                             "response"  => $apiResponse
                         ];
                     }

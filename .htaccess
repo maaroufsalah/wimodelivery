@@ -1,40 +1,19 @@
- Header set Content-Security-Policy: upgrade-insecure-requests
-
 RewriteEngine On
-
-
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^ %{REQUEST_SCHEME}://%1%{REQUEST_URI} [R=301,L]
-
 RewriteCond %{REQUEST_URI} !^/uploads/images/*
 RewriteCond %{REQUEST_URI} !^/uploads/*
 RewriteCond %{REQUEST_URI} !^/themes/*
-
 RewriteCond %{REQUEST_URI} !(\.eot\.ttf\.svg\.woff\.css|\.js|\.png|\.jpg|\.gif|\.mp3|\.html|\.csv|\.webp|\.jpeg|\.pdf|\.xlsx)$ [NC]
-
-#RewriteRule ^([^/]*)/([^/]*)$ index.php?url=$1&username=$2 [L]
-
 RewriteRule ^([^/]+)/? index.php?url=$1 [L,QSA]
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-RewriteEngine On
 RewriteRule ^produit/(.+)-([0-9]+)$ product_details?product_id=$2 [L,QSA]
 
-
-AddHandler application/x-httpd-php74 .php
-<IfModule mod_suphp.c>
-    suPHP_ConfigPath /opt/php74/lib
-</IfModule>
-
-
-<IfModule mod_php7.c>
+# Session config pour dev local
+<IfModule mod_php.c>
     php_value session.name PHPSESSID
     php_value session.cookie_lifetime 604800
     php_value session.cookie_path /
-    php_value session.cookie_domain app.foxlivraison.com
-    php_value session.cookie_secure 1
+    php_value session.cookie_secure 0
     php_value session.cookie_httponly 1
     php_value session.gc_maxlifetime 604800
 </IfModule>

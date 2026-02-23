@@ -58,7 +58,7 @@ if(!empty($firebase_token)) {
 
 
 // حفظ الكوكيز: user_id + token
-setcookie('login_session', $user["user_id"] . ":" . $newToken, $expirationTime, '/', '', true, true);
+setcookie('login_session', $user["user_id"] . ":" . $newToken, $expirationTime, '/', '', false, true);
 
 print "<div class='alert alert-success w-100'>Connexion réussie</div>";
 load_url("dashboard",0);        
