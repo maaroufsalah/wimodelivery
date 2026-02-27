@@ -1,0 +1,6 @@
+Options -Indexes
+
+# Bloquer accès direct aux fichiers sauf .php
+<Files "*.php">
+  Allow from all
+</Files>

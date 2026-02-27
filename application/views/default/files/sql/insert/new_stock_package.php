@@ -116,6 +116,9 @@ try {
     $stmt->execute();
 
     $order_id = $con->lastInsertId();
+    $or_code = 'WMD-' . $order_id;
+    $stmt_code = $con->prepare("UPDATE orders SET or_code = ? WHERE or_id = ?");
+    $stmt_code->execute([$or_code, $order_id]);
 
     // ✅ إضافة عناصر السلة + تحديث المخزون + log
     foreach ($cart as $item) {

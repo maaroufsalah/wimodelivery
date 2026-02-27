@@ -118,6 +118,11 @@ $stmt->bindParam(':or_created', $order_created, PDO::PARAM_STR);
 
 // تنفيذ الاستعلام
 if ($stmt->execute()) {
+$new_id = $con->lastInsertId();
+$or_code = 'WMD-' . $new_id;
+$stmt_code = $con->prepare("UPDATE orders SET or_code = ? WHERE or_id = ?");
+$stmt_code->execute([$or_code, $new_id]);
+
 echo "<div class='alert alert-success'>Terminé avec succès</div>";
 
 $stmt = $con->prepare("SELECT * FROM users WHERE user_rank = 'admin' AND user_unlink = '0'");

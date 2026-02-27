@@ -132,9 +132,14 @@ try {
     $stmt->bindParam(':or_created', $order_created, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
+        $new_id = $con->lastInsertId();
+        $or_code = 'WMD-' . $new_id;
+        $stmt_code = $con->prepare("UPDATE orders SET or_code = ? WHERE or_id = ?");
+        $stmt_code->execute([$or_code, $new_id]);
+
         $response['success'] = true;
         $response['message'] = 'Colis ajouté avec succès.';
-        $response['data'] = ['order_id' => $con->lastInsertId()];
+        $response['data'] = ['order_id' => $new_id, 'or_code' => $or_code];
     } else {
         throw new Exception('Erreur lors de l\'insertion.');
     }

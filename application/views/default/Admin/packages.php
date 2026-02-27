@@ -743,7 +743,84 @@ form.find('button[type=submit]').prop('disabled', false);
 });
 }
 
-ajaxFormSubmit('#api_form', '#result_api', 'api_list');
+$('#api_form').on('submit', function(e) {
+    e.preventDefault();
+    var form = $(this);
+    form.find('button[type=submit]').prop('disabled', true);
+    $.ajax({
+        url: 'api_list',
+        method: 'POST',
+        dataType: 'json',
+        data: form.serialize(),
+        success: function(data) {
+            var html = '';
+            if (data.status === 'error') {
+                html = '<div class="text-danger">' + (data.message || 'Erreur inconnue') + '</div>';
+            } else if (data.http_code !== undefined) {
+                // Réponse Chamel Express — response est un JSON string imbriqué
+                var resp = null;
+                try { resp = JSON.parse(data.response); } catch(ex) { resp = null; }
+
+                if (data.nb_colis > 1) {
+                    // Bulk (2+ colis)
+                    if (resp) {
+                        if (data.http_code === 500 || resp.type === 'error') {
+                            html = '<div class="text-danger">' + (resp.message || 'Erreur système côté prestataire') + '</div>';
+                        } else {
+                            var sc = resp.success_count || 0;
+                            var fc = resp.fail_count || 0;
+                            html = '<div class="' + (fc > 0 ? 'text-warning' : 'text-success') + '">';
+                            html += sc + ' colis envoyé(s), ' + fc + ' échec(s).';
+                            if (fc > 0 && resp.failed_orders) {
+                                html += '<ul>';
+                                $.each(resp.failed_orders, function(i, fo) {
+                                    html += '<li>' + (fo.code_suivi || fo.order_id || '#' + i) + ' : ';
+                                    if (fo.errors) {
+                                        $.each(fo.errors, function(field, msgs) { html += msgs.join(', ') + ' '; });
+                                    } else {
+                                        html += (fo.message || '');
+                                    }
+                                    html += '</li>';
+                                });
+                                html += '</ul>';
+                            }
+                            html += '</div>';
+                        }
+                    } else {
+                        html = '<div class="text-info">' + data.response + '</div>';
+                    }
+                } else {
+                    // Colis unique
+                    if (data.http_code === 200 && resp && resp.type === 'success') {
+                        html = '<div class="text-success">' + (resp.message || 'Commande créée avec succès') + '</div>';
+                    } else if (resp && resp.errors) {
+                        html = '<div class="text-danger"><ul>';
+                        $.each(resp.errors, function(field, msgs) {
+                            $.each(msgs, function(i, msg) { html += '<li>' + msg + '</li>'; });
+                        });
+                        html += '</ul></div>';
+                    } else if (data.http_code === 500) {
+                        html = '<div class="text-danger">Erreur système côté prestataire</div>';
+                    } else if (resp) {
+                        html = '<div class="' + (resp.type === 'success' ? 'text-success' : 'text-danger') + '">' + (resp.message || data.response) + '</div>';
+                    } else {
+                        html = '<div class="text-info">' + data.response + '</div>';
+                    }
+                }
+            } else {
+                // Autres APIs (Oscario…) — affichage générique
+                html = '<div class="text-success">' + JSON.stringify(data) + '</div>';
+            }
+            $('#result_api').html(html);
+        },
+        error: function() {
+            $('#result_api').html('<div class="text-danger">حدث خطأ في الفورم</div>');
+        },
+        complete: function() {
+            form.find('button[type=submit]').prop('disabled', false);
+        }
+    });
+});
 ajaxFormSubmit('#state_form', '#result_state', 'config_orders?do=state');
 ajaxFormSubmit('#delivery_form', '#result_delivery', 'config_orders?do=delivery');
 ajaxFormSubmit('#print_form', '#result_print', 'config_orders?do=print');

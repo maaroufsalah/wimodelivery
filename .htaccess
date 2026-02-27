@@ -4,6 +4,7 @@ RewriteRule ^ %{REQUEST_SCHEME}://%1%{REQUEST_URI} [R=301,L]
 RewriteCond %{REQUEST_URI} !^/uploads/images/*
 RewriteCond %{REQUEST_URI} !^/uploads/*
 RewriteCond %{REQUEST_URI} !^/themes/*
+RewriteCond %{REQUEST_URI} !^/webhooks/
 RewriteCond %{REQUEST_URI} !(\.eot\.ttf\.svg\.woff\.css|\.js|\.png|\.jpg|\.gif|\.mp3|\.html|\.csv|\.webp|\.jpeg|\.pdf|\.xlsx)$ [NC]
 RewriteRule ^([^/]+)/? index.php?url=$1 [L,QSA]
 RewriteRule ^produit/(.+)-([0-9]+)$ product_details?product_id=$2 [L,QSA]
